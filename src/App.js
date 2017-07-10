@@ -7,11 +7,16 @@ import InvestmentsPage from './InvestmentsPage'
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <div>
-          <Link to="/investments">investments</Link>
+      <div className="ui container">
+        <div className="ui three item menu">
+          <Link className="item" activeClassName="active" activeOnlyWhenExact to="/home">Home</Link>
+          <Link className="item" activeClassName="active" activeOnlyWhenExact to="/investments">
+            Investments
+          </Link>
+          <Link className="item" activeClassName="active" activeOnlyWhenExact to="/investments/new">
+            Add New Investments
+          </Link>
         </div>
-
         <Route exact path="/investments" component={InvestmentsPage} />
       </div>
     )
