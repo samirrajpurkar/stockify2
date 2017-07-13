@@ -13,15 +13,26 @@ class InvestmentForm extends Component {
       errors: {},
     }
     this.handleChange = (e) => {
-      this.setState({ [e.target.name]: e.target.value })
+      if (this.state.errors[e.target.name]) {
+        const errors = Object.assign({}, this.state.errors)
+        delete errors[e.target.name]
+        this.setState(
+          { [e.target.name]: e.target.value,
+            errors,
+          },
+        )
+      } else {
+        this.setState({ [e.target.name]: e.target.value })
+      }
     }
+
     this.handleSubmit = (e) => {
       e.preventDefault()
       const errors = {}
-      if (this.state.title === '') errors.title = "Can't be empty"
-      if (this.state.category === '') errors.category = "Can't be empty"
-      if (this.state.costprice === '') errors.category = "Can't be empty"
-      if (this.state.sellingprice === '') errors.sellingprice = "Can't be empty"
+      if (this.state.title === '') errors.title = 'Investment Title, please'
+      if (this.state.category === '') errors.category = 'Investment Category, please'
+      if (this.state.costprice === '' || this.state.costprice < 0.0) errors.costprice = 'Positive Investment Cost Price, please'
+      if (this.state.sellingprice === '' || this.state.sellingprice < 0.0) errors.sellingprice = 'Positive Investment Selling Price, please'
       this.setState({ errors })
     }
   }
@@ -32,7 +43,7 @@ class InvestmentForm extends Component {
 
         <h1>Add new investment</h1>
 
-        <div className="field">
+        <div className={classnames('field', { error: !!this.state.errors.title })}>
           <label htmlFor="title">Title</label>
           <input
             name="title"
@@ -43,7 +54,7 @@ class InvestmentForm extends Component {
           <span>{this.state.errors.title}</span>
         </div>
 
-        <div className="field">
+        <div className={classnames('field', { error: !!this.state.errors.category })}>
           <label htmlFor="category">Category</label>
           <input
             name="category"
@@ -51,26 +62,31 @@ class InvestmentForm extends Component {
             onChange={this.handleChange}
             id="category"
           />
+          <span>{this.state.errors.category}</span>
         </div>
 
-        <div className="field">
+        <div className={classnames('field', { error: !!this.state.errors.costprice })}>
           <label htmlFor="costprice">Cost Price</label>
           <input
+            type="number"
             name="costprice"
             value={this.state.costprice}
             onChange={this.handleChange}
             id="costprice"
           />
+          <span>{this.state.errors.costprice}</span>
         </div>
 
-        <div className="field">
+        <div className={classnames('field', { error: !!this.state.errors.sellingprice })}>
           <label htmlFor="sellingprice">Selling Price</label>
           <input
+            type="number"
             name="sellingprice"
             value={this.state.sellingprice}
             onChange={this.handleChange}
             id="sellingprice"
           />
+          <span>{this.state.errors.sellingprice}</span>
         </div>
 
         <div className="field">
